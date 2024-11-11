@@ -1,0 +1,37 @@
+baseURL: "https://url/2024/" # end with /
+title: "AWS Community Day NL"
+buildFuture: true # required in case of future events
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # allow inline html in markdown
+
+theme: "hugo-theme-aws-community-day"
+
+params:
+  timeFormat: "15:04" # If multi day event: "Mon 15:04" if US style: "Mon 3:04PM"
+  og:                 # open graph: https://ogp.me/
+                      # use frontmatter `default_og_text: True` on a page to show this default description
+    description: >
+      Join us on October 3, 2024, for a full-day conference at Kinepolis Leidschendam, featuring workshops, keynotes, and breakout sessions on business and technology. Pre-register now for the best chance to receive an invite. Sponsors receive guaranteed tickets and with each new sponsor, more community members will be invited.
+
+    enable_og_image: true
+
+menus:
+  main:
+    - name: "Previous Events"
+      weight: 100
+      pageRef: "#"
+    - name: "2022"
+      url: "https://awscommunityday.nl/2022/"
+      parent: "Previous Events"
+    - name: "2023"
+      url: "https://awscommunityday.nl/2023/"
+      parent: "Previous Events"
+    - name: "2020"
+      url: "https://youtu.be/tmwGOmmlTJE?list=PLFmmGmAXcP7B3nx9HjdLc-QT510HfCe9t"
+      parent: "Previous Events"
+    - name: "2021"
+      url: "https://youtu.be/8er0Kud2TSA?list=PLFmmGmAXcP7AY1ca_fwqyGtzrluUPzAkO"
+      parent: "Previous Events"
