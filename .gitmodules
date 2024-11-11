@@ -1,0 +1,3 @@
+[submodule "website/next/themes/hugo-theme-aws-community-day"]
+	path = website/next/themes/hugo-theme-aws-community-day
+	url = https://github.com/awsugnl/hugo-theme-aws-community-day.git
