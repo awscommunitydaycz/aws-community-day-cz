@@ -1,11 +1,11 @@
 import * as cdk from "aws-cdk-lib";
 import * as route53 from "aws-cdk-lib/aws-route53";
-import * as route53Targets from "aws-cdk-lib/aws-route53-targets";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
 import path from "path";
 import { WebsiteCloudFront } from "./cloudfront";
+import { WebsiteDns } from "./dns";
 
 export interface WebsiteProps extends cdk.StackProps {
   domainName: string;
@@ -55,24 +55,9 @@ export class Website extends cdk.Stack {
       destinationBucket: websiteBucket,
     });
 
-    new route53.ARecord(this, "WebsiteAliasRecord", {
-      zone: hostedZone,
-      target: route53.RecordTarget.fromAlias(
-        new route53Targets.CloudFrontTarget(cloudfront.distribution)
-      ),
-      recordName: domainName,
-    });
-
-    new route53.ARecord(this, "WebsiteWWWAliasRecord", {
-      zone: hostedZone,
-      target: route53.RecordTarget.fromAlias(
-        new route53Targets.CloudFrontTarget(cloudfront.distribution)
-      ),
-      recordName: `www.${domainName}`,
-    });
-
-    new cdk.CfnOutput(this, "WebsiteURL", {
-      value: `https://${domainName}`,
+    new WebsiteDns(this, "WebsiteDns", {
+      hostedZone,
+      distribution: cloudfront.distribution,
     });
   }
 }
