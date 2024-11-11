@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { Website } from "./website.stack";
+import { Website } from "./website/website.stack";
 
 const app = new cdk.App();
 

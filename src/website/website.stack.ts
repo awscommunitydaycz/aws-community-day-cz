@@ -79,7 +79,7 @@ export class Website extends cdk.Stack {
               eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
               function: new cloudfront.Function(this, "RedirectFunction", {
                 code: cloudfront.FunctionCode.fromFile({
-                  filePath: "src/cloudfront-redirect.js",
+                  filePath: path.join(__dirname, "cloudfront-redirect.js"),
                 }),
               }),
             },
