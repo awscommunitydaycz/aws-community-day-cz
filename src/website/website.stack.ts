@@ -1,11 +1,10 @@
 import * as cdk from "aws-cdk-lib";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
-import path from "path";
 import { WebsiteCloudFront } from "./cloudfront";
 import { WebsiteDns } from "./dns";
+import { WebsiteDeployemnts } from "./deployments";
 
 export interface WebsiteProps extends cdk.StackProps {
   domainName: string;
@@ -40,19 +39,9 @@ export class Website extends cdk.Stack {
       hostedZone,
     });
 
-    new s3deploy.BucketDeployment(this, "DeployNextWebsite", {
-      sources: [s3deploy.Source.asset(path.join("website", "next", "public"))],
-      destinationBucket: websiteBucket,
-      destinationKeyPrefix: "next/",
-    });
-
-    new s3deploy.BucketDeployment(this, "Deploy4xxPages", {
-      sources: [
-        s3deploy.Source.asset(path.join("website"), {
-          exclude: ["*", ".*", "!403.html", "!404.html"],
-        }),
-      ],
-      destinationBucket: websiteBucket,
+    new WebsiteDeployemnts(this, "WebsiteDeployments", {
+      websiteBucket,
+      distribution: cloudfront.distribution,
     });
 
     new WebsiteDns(this, "WebsiteDns", {
