@@ -25,7 +25,13 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2019"
+    "target": "ES2019",
+    "baseUrl": ".",
+    "paths": {
+      "@*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

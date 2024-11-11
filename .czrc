@@ -1,0 +1,10 @@
+{
+  "path": "./node_modules/cz-conventional-changelog",
+  "exclamationMark": true,
+  "skipScope": false,
+  "customScope": true,
+  "scopes": [
+    "infra",
+    "web"
+  ]
+}

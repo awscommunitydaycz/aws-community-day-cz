@@ -24,6 +24,24 @@
         }
       ]
     },
+    "bump": {
+      "name": "bump",
+      "description": "Bumps version based on latest git tag and generates a changelog entry",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt",
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
+      },
+      "steps": [
+        {
+          "builtin": "release/bump-version"
+        }
+      ],
+      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
+    },
     "bundle": {
       "name": "bundle",
       "description": "Prepare assets"
@@ -147,7 +165,15 @@
     },
     "package": {
       "name": "package",
-      "description": "Creates the distribution package"
+      "description": "Creates the distribution package",
+      "steps": [
+        {
+          "exec": "mkdir -p dist/js"
+        },
+        {
+          "exec": "pnpm pack --pack-destination dist/js"
+        }
+      ]
     },
     "post-compile": {
       "name": "post-compile",
@@ -165,6 +191,71 @@
     "pre-compile": {
       "name": "pre-compile",
       "description": "Prepare the project for compilation"
+    },
+    "precommit": {
+      "name": "precommit",
+      "steps": [
+        {
+          "exec": "lint-staged"
+        }
+      ]
+    },
+    "prepare": {
+      "name": "prepare",
+      "steps": [
+        {
+          "exec": "husky install"
+        }
+      ]
+    },
+    "publish:git": {
+      "name": "publish:git",
+      "description": "Prepends the release changelog onto the project changelog, creates a release commit, and tags the release",
+      "env": {
+        "CHANGELOG": "dist/changelog.md",
+        "RELEASE_TAG_FILE": "dist/releasetag.txt",
+        "PROJECT_CHANGELOG_FILE": "CHANGELOG.md",
+        "VERSION_FILE": "dist/version.txt"
+      },
+      "steps": [
+        {
+          "builtin": "release/update-changelog"
+        },
+        {
+          "builtin": "release/tag-version"
+        },
+        {
+          "exec": "git push --follow-tags origin main"
+        }
+      ],
+      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
+    },
+    "release": {
+      "name": "release",
+      "description": "Prepare a release from \"main\" branch",
+      "env": {
+        "RELEASE": "true"
+      },
+      "steps": [
+        {
+          "exec": "rm -fr dist"
+        },
+        {
+          "spawn": "bump"
+        },
+        {
+          "spawn": "build"
+        },
+        {
+          "spawn": "unbump"
+        },
+        {
+          "exec": "git diff --ignore-space-at-eol --exit-code"
+        },
+        {
+          "spawn": "publish:git"
+        }
+      ]
     },
     "synth": {
       "name": "synth",
@@ -206,6 +297,23 @@
         }
       ]
     },
+    "unbump": {
+      "name": "unbump",
+      "description": "Restores version to 0.0.0",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt",
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
+      },
+      "steps": [
+        {
+          "builtin": "release/reset-version"
+        }
+      ]
+    },
     "upgrade": {
       "name": "upgrade",
       "description": "upgrade dependencies",
@@ -214,13 +322,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,@types/node,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,projen,ts-jest,ts-node,typescript"
+          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@commitlint/cli,@commitlint/config-conventional,@digitalroute/cz-conventional-changelog-for-jira,@types/jest,@types/node,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,husky,jest,lint-staged,prettier,projen,ts-jest,ts-node,tsconfig-paths,typescript"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @stylistic/eslint-plugin @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit projen ts-jest ts-node typescript aws-cdk-lib constructs"
+          "exec": "pnpm update @commitlint/cli @commitlint/config-conventional @digitalroute/cz-conventional-changelog-for-jira @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk commit-and-tag-version esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint husky jest jest-junit lint-staged prettier projen ts-jest ts-node tsconfig-paths typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

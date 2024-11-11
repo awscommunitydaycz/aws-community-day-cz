@@ -3,6 +3,10 @@
 /test-reports/
 junit.xml
 /coverage/
+/dist/changelog.md
+/dist/version.txt
+/.prettierignore
+/.prettierrc.yml
 /test/
 /tsconfig.dev.json
 /src/
