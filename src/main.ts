@@ -1,23 +1,17 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import * as cdk from "aws-cdk-lib";
+import { Website } from "./website.stack";
 
-export class MyStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
-    super(scope, id, props);
+const app = new cdk.App();
 
-    // define resources here...
-  }
-}
+new Website(app, "dev-web", {
+  stackName: "dev-community-day-web",
+  domainName: "awscd.malanius.dev",
+  hostedZoneId: "Z0029338IRRURSH915ND",
+  tags: {
+    env: "dev",
+  },
+});
 
-// for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
-
-const app = new App();
-
-new MyStack(app, 'aws-community-day-cz-dev', { env: devEnv });
-// new MyStack(app, 'aws-community-day-cz-prod', { env: prodEnv });
+cdk.Tags.of(app).add("project", "aws-community-day-cz");
 
 app.synth();
