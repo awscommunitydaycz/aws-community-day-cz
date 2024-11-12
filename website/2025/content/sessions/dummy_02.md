@@ -3,7 +3,7 @@ title: "Redefining Justice: A Philosophical Debate"
 date: 2025-04-29T12:00:00
 speakers:
     - "yagami-light"
-room: "justice-forum"
+room: "going-merry-bottom"
 agenda: "1200"
 duration: "30"
 sponsors:

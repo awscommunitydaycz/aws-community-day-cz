@@ -3,7 +3,7 @@ title: "Reviving Civilization Through Science"
 date: 2025-04-29T14:00:00
 speakers:
     - "ishigami-senku"
-room: "science-lab"
+room: "going-merry-top"
 agenda: "1400"
 duration: "60"
 sponsors:

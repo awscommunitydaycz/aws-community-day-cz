@@ -3,7 +3,7 @@ title: "Empowering Women Through Love and Justice"
 date: 2025-04-29T16:00:00
 speakers:
     - "usagi-tsukino"
-room: "moonlight-stage"
+room: "going-merry-top"
 agenda: "1600"
 duration: "30"
 sponsors:

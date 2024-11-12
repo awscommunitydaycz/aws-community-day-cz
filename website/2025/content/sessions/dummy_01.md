@@ -3,7 +3,7 @@ title: "Resilience and Leadership in a Challenging World"
 date: 2025-04-29T10:00:00
 speakers:
     - "uzumaki-naruto"
-room: "main-hall"
+room: "going-merry-top"
 agenda: "1000"
 duration: "45"
 sponsors:
