@@ -1,34 +1,36 @@
+var NEXT_EVENT_YEAR = '2025';
+
 function handler(event) {
   var request = event.request;
   var uri = request.uri;
   var headers = request.headers;
   var host = request.headers.host.value;
   // Redirect www to apex
-  if (host.startsWith("www.")) {
-    var newurl = host.replace("www.", "");
+  if (host.startsWith('www.')) {
+    var newurl = host.replace('www.', '');
     var response = {
       statusCode: 302,
-      statusDescription: "Found",
-      headers: { location: { value: "https://" + newurl + uri } },
+      statusDescription: 'Found',
+      headers: { location: { value: 'https://' + newurl + uri } },
     };
     return response;
   }
   // redirect to the correct year
-  else if (uri == "/") {
+  else if (uri == '/') {
     var response = {
       statusCode: 302,
-      statusDescription: "Found",
-      headers: { location: { value: "/next/" } },
+      statusDescription: 'Found',
+      headers: { location: { value: `/${NEXT_EVENT_YEAR}/` } },
     };
     return response;
   }
   // Check whether the URI is missing a file name.
-  else if (uri.endsWith("/")) {
-    request.uri += "index.html";
+  else if (uri.endsWith('/')) {
+    request.uri += 'index.html';
   }
   // Check whether the URI is missing a file extension.
-  else if (!uri.includes(".")) {
-    request.uri += "/index.html";
+  else if (!uri.includes('.')) {
+    request.uri += '/index.html';
   }
   return request;
 }
