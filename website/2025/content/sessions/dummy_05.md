@@ -1,11 +1,11 @@
 ---
 title: "Fireside Chat: Leadership Under Pressure"
-date: 2025-04-29T17:00:00
+date: 2025-04-29T15:30:00
 speakers:
     - "ackerman-levi"
 room: "going-merry-bottom"
-agenda: "1700"
-duration: "30"
+agenda: "1530"
+duration: "60"
 sponsors:
     - survey-corps
 ---

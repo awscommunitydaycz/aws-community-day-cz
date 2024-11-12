@@ -1,10 +1,10 @@
 ---
 title: "Empowering Women Through Love and Justice"
-date: 2025-04-29T16:00:00
+date: 2025-04-29T14:00:00
 speakers:
     - "usagi-tsukino"
 room: "going-merry-top"
-agenda: "1600"
+agenda: "1400"
 duration: "30"
 sponsors:
     - crystal-foundation
