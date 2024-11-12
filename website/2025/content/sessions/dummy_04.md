@@ -7,7 +7,7 @@ room: "moonlight-stage"
 agenda: "1600"
 duration: "30"
 sponsors:
-    - silver-crystal-foundation
+    - crystal-foundation
 ---
 
 Sailor Moon will inspire attendees with her message of love, justice, and women empowerment. Learn how embracing compassion and inner strength can make a difference in both personal and professional life.
