@@ -1,8 +1,8 @@
-import { Distribution } from "aws-cdk-lib/aws-cloudfront";
-import { Bucket } from "aws-cdk-lib/aws-s3";
-import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
-import { Construct } from "constructs";
-import path from "path";
+import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
+import { Construct } from 'constructs';
+import path from 'path';
 
 export interface WebsiteDeploymentsProps {
   websiteBucket: Bucket;
@@ -15,18 +15,22 @@ export class WebsiteDeployemnts extends Construct {
 
     const { websiteBucket, distribution } = props;
 
-    new BucketDeployment(this, "DeployNextWebsite", {
-      sources: [Source.asset(path.join("website", "next", "public"))],
-      destinationBucket: websiteBucket,
-      destinationKeyPrefix: "next/",
-      distribution,
-      distributionPaths: ["/next/*"],
+    const years = ['2025'];
+
+    years.forEach((year) => {
+      new BucketDeployment(this, `Deploy${year}Website`, {
+        sources: [Source.asset(path.join('website', year, 'public'))],
+        destinationBucket: websiteBucket,
+        destinationKeyPrefix: '2025/',
+        distribution,
+        distributionPaths: ['/2025/*'],
+      });
     });
 
-    new BucketDeployment(this, "Deploy4xxPages", {
+    new BucketDeployment(this, 'Deploy4xxPages', {
       sources: [
-        Source.asset(path.join("website"), {
-          exclude: ["*", ".*", "!403.html", "!404.html"],
+        Source.asset(path.join('website'), {
+          exclude: ['*', '.*', '!403.html', '!404.html'],
         }),
       ],
       destinationBucket: websiteBucket,
