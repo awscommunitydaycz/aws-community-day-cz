@@ -1,0 +1,42 @@
+{{ define "main" }}
+
+{{ $room := .Site.GetPage (printf "/%s/%s" "rooms" .Params.room ) }}
+
+{{ $timeFormat := .Site.Params.timeFormat | default "15:04" }}
+
+<div class="mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="sessionid">{{ .File.ContentBaseName | upper }}</div>
+                <h1>{{ .Title }}</h2>
+                <div class="h4">
+                    Room: <a href="{{ $room.Permalink }}" class="no-underline">{{ $room.Title }}</a> | 
+                    Time: <a href="{{ .Site.BaseURL }}agenda/{{ .Params.agenda }}" class="no-underline">{{ .Date.Format $timeFormat }}</a>
+                    {{ with .Param "tracks" }}
+                    {{ $tracks := . | len }}
+                    | Track{{ if gt $tracks 1 }}s{{end}}: 
+                        {{ range $index, $tag :=  . }}{{- if $index }}, {{ end }}
+                            {{ with $.Site.GetPage (printf "/%s/%s" "tracks" $tag) -}}
+                                <a href="{{ .RelPermalink  }}" class="no-underline">{{ .Title }}</a>
+                            {{ end }}
+                        {{ end }}
+                    {{ end }}
+                    <i id="{{ .File.ContentBaseName | upper }}" class="like"></i>
+                </div>
+                {{ .Content }}
+            </div>
+            <div class="col-12 col-lg-4">
+                {{ with .Param "speakers" }}
+                {{ range $index, $tag := . }}
+                    {{ with $.Site.GetPage (printf "/%s/%s" "speakers" $tag) -}}
+                        {{ partial "speaker" . }}
+                    {{ end }}
+                {{ end }}
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ end }}

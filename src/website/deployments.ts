@@ -3,6 +3,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import path from 'path';
+import { readdirSync } from 'fs';
 
 export interface WebsiteDeploymentsProps {
   websiteBucket: Bucket;
@@ -15,15 +16,18 @@ export class WebsiteDeployemnts extends Construct {
 
     const { websiteBucket, distribution } = props;
 
-    const years = ['2025'];
+    const years = readdirSync('website', { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
-    years.forEach((year) => {
+    years.forEach((yearWithPrefix) => {
+      const year = yearWithPrefix.replace('_', '');
       new BucketDeployment(this, `Deploy${year}Website`, {
-        sources: [Source.asset(path.join('website', year, 'public'))],
+        sources: [Source.asset(path.join('website', yearWithPrefix, 'public'))],
         destinationBucket: websiteBucket,
-        destinationKeyPrefix: '2025/',
+        destinationKeyPrefix: `${year}/`,
         distribution,
-        distributionPaths: ['/2025/*'],
+        distributionPaths: [`/${year}/*`],
       });
     });
 
