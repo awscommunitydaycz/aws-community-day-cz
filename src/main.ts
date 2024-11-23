@@ -1,17 +1,13 @@
-import * as cdk from "aws-cdk-lib";
-import { Website } from "./website/website.stack";
+import * as cdk from 'aws-cdk-lib';
+import { WebStage } from './stage';
 
 const app = new cdk.App();
 
-new Website(app, "dev-web", {
-  stackName: "dev-community-day-web",
-  domainName: "awscd.malanius.dev",
-  hostedZoneId: "Z0029338IRRURSH915ND",
-  tags: {
-    env: "dev",
-  },
+new WebStage(app, 'dev', {
+  domainName: 'awscd.malanius.dev',
+  hostedZoneId: 'Z0029338IRRURSH915ND',
 });
 
-cdk.Tags.of(app).add("project", "aws-community-day-cz");
+cdk.Tags.of(app).add('project', 'aws-community-day-cz');
 
 app.synth();
