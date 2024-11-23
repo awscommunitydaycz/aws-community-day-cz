@@ -1,0 +1,39 @@
+---
+title: "Login"
+layout: "html"
+---
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-5">
+            <div class="mb-3">
+                <h1>Login</h1>
+                This login page is only used to bookmark your sessions. You cannot register using this form. If you pre-registered, you'll receive an invite.
+            </div>
+            <div id="request_code_form" style="display: none;">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                    <div id="emailHelp" class="form-text">Use the same e-mail address you used to register for the event.</div>
+                </div>
+                <button type="button" class="btn btn-primary mb-3" id="send_code">Send me a Code</button>
+            </div>
+            <div id="login_form">
+                <div class="mb-3">
+                    <label for="code" class="form-label">Code</label>
+                    <input type="text" class="form-control" id="code">
+                    <div id="codeHelp" class="form-text">Enter the code you received</div>
+                </div>
+                <button type="button" class="btn btn-primary" id="login">Login</button>
+            </div>
+            <div id="logout_form" style="display: none">
+                <div class="mb-3">
+                    You're now logged in, navigate to another page to manage your session bookmarks.
+                </div>
+                <a href="/2024/sessions" type="button" class="btn btn-primary">Session Catalog</a>
+                <a href="/2024/agenda" type="button" class="btn btn-primary">Agenda</a>
+                <button type="button" class="btn btn-link" id="logout">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>

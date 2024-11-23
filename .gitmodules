@@ -1,3 +1,8 @@
-[submodule "website/2025/themes/hugo-theme-aws-community-day"]
-	path = website/2025/themes/hugo-theme-aws-community-day
+[submodule "website/_2025/themes/hugo-theme-aws-community-day"]
+	path = website/_2025/themes/hugo-theme-aws-community-day
 	url = https://github.com/awsugnl/hugo-theme-aws-community-day.git
+
+[submodule "website/demo/themes/hugo-theme-aws-community-day"]
+	path = website/demo/themes/hugo-theme-aws-community-day
+	url = https://github.com/awsugnl/hugo-theme-aws-community-day.git
+

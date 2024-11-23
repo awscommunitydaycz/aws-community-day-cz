@@ -1,0 +1,188 @@
+<script>
+
+let api = "https://44e4wwlvsg.execute-api.eu-west-1.amazonaws.com/api"
+
+function get_mylikes() {
+    $.ajax({
+        method: "GET",
+        url: api + "/mylikes",
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+            xhr.setRequestHeader('Authorization', localStorage.token);
+            }
+        },
+        success: function(data) {
+            console.log(data);
+        },
+        error: function (data) {
+            localStorage.removeItem('token');
+        }
+    });
+}
+
+function refresh_icons(data) {
+    data.forEach(element => {
+        $('#'+element).attr('status', 'like');
+        $('#'+element).removeClass('bi-bookmark-star');
+        $('#'+element).addClass('bi-bookmark-star-fill');
+    });
+}
+
+$(".like").click(function() {
+    if($(this).attr('status') == "like") {
+        unlike($(this).attr('id'));
+        $(this).attr('status', 'nolike');
+        $(this).removeClass('bi-bookmark-star-fill');
+        $(this).addClass('bi-bookmark-star');
+    } else {
+        like($(this).attr('id'));
+        $(this).attr('status', 'like');
+        $(this).removeClass('bi-bookmark-star');
+        $(this).addClass('bi-bookmark-star-fill');
+    }
+});
+
+function unlike(session_id) {
+    $.ajax({
+        type: "DELETE",
+        url: api + "/mylikes/"+session_id,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', localStorage.token);
+            }
+        },
+        success: function(data) {
+            console.log(data);
+        },
+        error: function (data) {
+            localStorage.removeItem('token');
+        }
+    });
+}
+
+function like(session_id) {
+    $.ajax({
+        method: "PUT",
+        url: api + "/mylikes",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 'session_id' : session_id }),
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', localStorage.token);
+            }
+        },
+        success: function(data) {
+            console.log(data);
+        },
+        error: function (data) {
+            localStorage.removeItem('token');
+        }
+    });
+}
+
+function send_code() {
+    $("#send_code").prop('disabled', true);
+    $.ajax({
+        method: "POST",
+        url: api + "/request_code",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 'email' : $("#email").val() }),
+        success: function(data) {
+            $("#request_code_form").hide();
+            $("#login_form").show();
+            $("#code").focus();
+        },
+        error: function (data) {
+            console.log(data);
+            alert(data.responseJSON.Message);
+            localStorage.removeItem('token');
+        }
+    });
+}
+
+function login() {
+    $("#login").prop('disabled', true);
+    $.ajax({
+    method: "POST",
+    url: api + "/login",
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify({ 'email' : $("#email").val(), 'code': $("#code").val() }),
+    success: function(data) {
+        $("#login_form").hide();
+        $("#logout_form").show();
+        localStorage.token = data.Token;
+    },
+    error: function (data) {
+        localStorage.removeItem('token');
+    }
+    });
+}
+
+$(document).ready(function(){
+
+    // find all class=like buttons 
+    $('.like').attr('status', 'nolike');
+    $('.like').addClass('bi bi-bookmark-star text-orange');
+    $('.like').css('color', '#ff8800');
+
+    // if logged in, get your current likes and show the log out button
+    if (localStorage.token) {
+        $.ajax({
+            method: "GET",
+            url: api + "/mylikes",
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', localStorage.token);
+            }
+            },
+            success: function(data) {
+                refresh_icons(data);
+                $("#request_code_form").hide();
+                $("#login_form").hide();
+                $("#logout_form").show();
+            },
+            error: function (data) {
+                localStorage.removeItem('token');
+            }
+        });
+    } else {
+        $("#request_code_form").show();
+        $("#email").focus();
+        $('.like').hide();
+    }
+
+    // hide the send login form where to enter the code
+    $("#login_form").hide();
+
+    $("#email").keypress(function(e){
+        if (e.which == '13') {
+            send_code();
+        }
+    });
+
+    $("#code").keypress(function(e){
+        if (e.which == '13') {
+            send_code();
+        }
+    });
+
+    $("#send_code").click(function(){
+        send_code();
+    });
+
+    $("#login").click(function(){
+        login();
+    });
+
+    $("#logout").click(function(){
+        localStorage.removeItem('token');
+        $("#logout_form").hide();
+        $("#request_code_form").show();
+    });
+});
+</script>
