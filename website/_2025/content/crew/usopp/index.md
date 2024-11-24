@@ -1,4 +1,0 @@
----
-title: "Usopp"
-headline: "Sniper"
----

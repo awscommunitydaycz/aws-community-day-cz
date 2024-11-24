@@ -1,4 +1,0 @@
----
-title: "Nami"
-headline: "Navigator"
----

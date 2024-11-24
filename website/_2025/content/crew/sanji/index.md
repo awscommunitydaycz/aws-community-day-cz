@@ -1,4 +1,0 @@
----
-title: "Sanji"
-headline: "Cook"
----

@@ -5,6 +5,9 @@ YEAR := "demo"
 default:
     @just --list
 
+serve:
+    hugo serve
+
 build-dev:
     @echo "Building DEV"
     hugo -b {{DEV_SITE}}/{{YEAR}}/

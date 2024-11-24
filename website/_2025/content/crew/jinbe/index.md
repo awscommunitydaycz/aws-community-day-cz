@@ -1,4 +1,0 @@
----
-title: "Jinbe"
-headline: "Helmsman"
----

@@ -4,6 +4,7 @@ import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 interface WebStageProps extends StageProps {
+  appName: string;
   domainName: string;
   hostedZoneId: string;
 }
@@ -11,9 +12,10 @@ interface WebStageProps extends StageProps {
 export class WebStage extends Stage {
   constructor(scope: Construct, id: string, props: WebStageProps) {
     super(scope, id, props);
-    const { domainName, hostedZoneId } = props;
+    const { domainName, hostedZoneId, appName } = props;
 
     new Website(this, 'web', {
+      stackName: `${this.stageName}-${appName}-website`,
       domainName,
       hostedZoneId,
     });

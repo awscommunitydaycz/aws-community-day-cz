@@ -1,4 +1,0 @@
----
-title: "Brook"
-headline: "Musician"
----
