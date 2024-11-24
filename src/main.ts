@@ -10,6 +10,12 @@ new WebStage(app, 'dev', {
   hostedZoneId: 'Z0029338IRRURSH915ND',
 });
 
+new WebStage(app, 'prod', {
+  appName,
+  domainName: 'awscommunityday.cz',
+  hostedZoneId: 'Z104115017VTV7WC2805D',
+});
+
 cdk.Tags.of(app).add('project', appName);
 
 app.synth();
