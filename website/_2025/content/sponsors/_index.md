@@ -6,4 +6,4 @@ menu:
 ---
 
 
-We're looking for sponsors to help us make this event a success. If you're interested in sponsoring, please contact us at TODO.
+We're looking for sponsors to help us make this event a success. If you're interested in sponsoring, please contact Martin Damovsky (main organizer) at martin (dot) damovsky (at) gmail (dot) com.
