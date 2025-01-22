@@ -25,13 +25,16 @@ export class GitHubDeploy extends cdk.Stack {
 
     new iam.Role(this, 'CdkDeployRole', {
       assumedBy: new iam.FederatedPrincipal(
-        githubProvider.openIdConnectProviderArn
-      ).withConditions({
-        StringEquals: {
-          'token.actions.githubusercontent.com:sub': `repo:${repository}:${branchPath}`,
-          'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+        githubProvider.openIdConnectProviderArn,
+        {
+          StringEquals: {
+            'token.actions.githubusercontent.com:sub': `repo:${repository}:${branchPath}`,
+            'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+          },
         },
-      }),
+        'sts:AssumeRoleWithWebIdentity'
+      ),
+
       inlinePolicies: {
         allowCdkAssume: new iam.PolicyDocument({
           statements: [
