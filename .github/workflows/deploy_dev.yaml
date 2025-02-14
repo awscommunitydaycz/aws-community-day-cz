@@ -12,11 +12,21 @@ permissions:
       contents: read    # This is required for actions/checkout
 
 jobs:
-  AssumeRoleAndCallIdentity:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: |
+            args: --frozen-lockfile
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
