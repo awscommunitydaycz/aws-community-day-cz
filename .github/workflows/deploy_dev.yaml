@@ -1,4 +1,4 @@
-name: Connect to an AWS role from a GitHub repository
+name: Test Deploy CDK
 
 on:
   push:
@@ -21,14 +21,14 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9
-          run_install: |
-            - args: --frozen-lockfile
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: "20"
           cache: "pnpm"
-      - name: configure aws credentials
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
