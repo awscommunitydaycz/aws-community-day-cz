@@ -28,8 +28,10 @@ export class GitHubDeploy extends cdk.Stack {
         githubProvider.openIdConnectProviderArn,
         {
           StringEquals: {
-            'token.actions.githubusercontent.com:sub': `repo:${repository}:${branchPath}`,
             'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+          },
+          StringLike: {
+            'token.actions.githubusercontent.com:sub': `repo:${repository}:${branchPath}`,
           },
         },
         'sts:AssumeRoleWithWebIdentity'
