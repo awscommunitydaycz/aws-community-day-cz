@@ -75,5 +75,7 @@ jobs:
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity
+      - name: CDK doctor
+        run: npx cdk doctor
       - name: Diff CDK
         run: npx cdk diff dev/*
