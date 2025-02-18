@@ -2,19 +2,56 @@ name: Test Deploy CDK
 
 on:
   push:
-    branches: [ feature/* ]
+    branches: [feature/*]
 
 env:
-  AWS_REGION : "eu-central-1"
+  AWS_REGION: 'eu-central-1'
 
 permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_CACHEDIR: /tmp/hugo_cache
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.143.1'
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: '1.38.0'
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.HUGO_CACHEDIR }}
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+      - name: Build
+        run: just build-dev
+      - name: Archive built web
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: website/*/public
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download built website
+        uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: website/
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: Set up pnpm
@@ -22,8 +59,8 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Configure AWS credentials
