@@ -53,6 +53,8 @@ jobs:
         with:
           name: website
           path: website/
+      - name: Display structure of downloaded files
+        run: ls -R website/
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: Set up pnpm
