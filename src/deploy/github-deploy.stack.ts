@@ -42,7 +42,7 @@ export class GitHubDeploy extends cdk.Stack {
           statements: [
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
-              actions: ['sts:AssumeRole'],
+              actions: ['sts:AssumeRole', 'sts:TagSession'],
               resources: ['arn:aws:iam::*:role/cdk-*'],
             }),
           ],
