@@ -17,9 +17,13 @@ params:
       Join us on April 29, 2025, for a full-day conference at O2 Universum, Prague, featuring workshops, keynotes, and breakout sessions on business and technology. Pre-register now for the best chance to receive an invite. Sponsors receive guaranteed tickets and with each new sponsor, more community members will be invited.
 
     enable_og_image: true
-# TODO: once we have previous years, link them here :)
-# menus:
-#   main:
+
+menus:
+  main:
+    - name: 'Register'
+      url: 'https://form.simpleshop.cz/EOqaW/'
+      weight: 1000
+# # TODO: once we have previous years, link them here :)
 #     - name: 'Previous Events'
 #       weight: 100
 #       pageRef: '#'
