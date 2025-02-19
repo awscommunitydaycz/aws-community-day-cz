@@ -6,6 +6,9 @@ default:
 init:
     git submodule update --init --recursive
 
+serve:
+    @just website::_2025::serve
+
 build-dev:
     @just website::_2025::build-dev
     @just website::demo::build-dev
