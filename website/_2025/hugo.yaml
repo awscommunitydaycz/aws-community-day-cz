@@ -14,7 +14,7 @@ params:
   og: # open graph: https://ogp.me/
     # use frontmatter `default_og_text: True` on a page to show this default description
     description: >
-      Join us on April 29, 2025, for a full-day conference at O2 Universum, Prague, featuring workshops, keynotes, and breakout sessions on business and technology. Register now to secure your place!
+      On April 29th, 2025, we organize a full-day conference at O2 Universum, Prague, featuring workshops, keynotes, and breakout sessions on business and technology.
 
     enable_og_image: true
 
