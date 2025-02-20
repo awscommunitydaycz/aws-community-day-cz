@@ -66,7 +66,7 @@ export class GitHubDeploy extends cdk.Stack {
 
     deployUserRole.grant(deployUser, 'sts:AssumeRole', 'sts:TagSession');
 
-    deployUserRole.attachInlinePolicy(
+    deployUser.attachInlinePolicy(
       new iam.Policy(this, 'CloudformationPolicy', {
         policyName: `deploy-cloudformation`,
         statements: [
@@ -79,7 +79,7 @@ export class GitHubDeploy extends cdk.Stack {
       })
     );
 
-    deployUserRole.attachInlinePolicy(
+    deployUser.attachInlinePolicy(
       new iam.Policy(this, 'CdkPolicy', {
         policyName: `deploy-cdk`,
         statements: [
