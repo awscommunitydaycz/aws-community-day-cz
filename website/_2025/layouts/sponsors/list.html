@@ -1,0 +1,119 @@
+{{ define "main" }}
+
+<div class="mt-3">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            {{ .Content }}
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 text-center sponsor-gold" style="color: #B9F2FF;">
+                Diamond
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center row-cols-2 row-cols-lg-3">
+            {{ range .Page.Pages }}
+            {{ if in .Params.level "diamond" }}
+                {{- $img := "" }}
+                {{- if fileExists (printf "%s/%s" .Path "img/logo.svg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.svg") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.png") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.png") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.jpg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.jpg") }}
+                {{- else }}
+                    {{- $img = (printf "%s%s" .Site.BaseURL "img/company.png") }}
+                {{- end }}
+            <div class="col p-3">
+                <a href="{{ .RelPermalink }}">
+                    <img src="{{ $img }}" class="mx-auto d-block" style="width: 80%" />
+                </a>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 text-center sponsor-gold">
+                Gold
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center row-cols-2 row-cols-lg-3">
+            {{ range .Page.Pages }}
+            {{ if in .Params.level "gold" }}
+                {{- $img := "" }}
+                {{- if fileExists (printf "%s/%s" .Path "img/logo.svg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.svg") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.png") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.png") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.jpg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.jpg") }}
+                {{- else }}
+                    {{- $img = (printf "%s%s" .Site.BaseURL "img/company.png") }}
+                {{- end }}
+            <div class="col p-3">
+                <a href="{{ .RelPermalink }}">
+                    <img src="{{ $img }}" class="mx-auto d-block" style="width: 70%" />
+                </a>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 text-center sponsor-silver">
+                Silver
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center row-cols-2 row-cols-lg-3">
+            {{ range .Page.Pages }}
+            {{ if in .Params.level "silver" }}
+                {{- $img := "" }}
+                {{- if fileExists (printf "%s/%s" .Path "img/logo.svg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.svg") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.png") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.png") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.jpg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.jpg") }}
+                {{- else }}
+                    {{- $img = (printf "%s%s" .Site.BaseURL "img/company.png") }}
+                {{- end }}
+            <div class="col p-3">
+                <a href="{{ .RelPermalink }}">
+                    <img src="{{ $img }}" class="mx-auto d-block" style="width: 50%" />
+                </a>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 text-center sponsor-bronze">
+                Bronze
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center row-cols-2 row-cols-lg-3">
+            {{ range .Page.Pages }}
+            {{ if in .Params.level "bronze" }}
+                {{- $img := "" }}
+                {{- if fileExists (printf "%s/%s" .Path "img/logo.svg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.svg") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.png") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.png") }}
+                {{- else if fileExists (printf "%s/%s" .Path "img/logo.jpg") }}
+                    {{- $img = (printf "%s%s" .RelPermalink "img/logo.jpg") }}
+                {{- else }}
+                    {{- $img = (printf "%s%s" .Site.BaseURL "img/company.png") }}
+                {{- end }}
+            <div class="col p-3">
+                <a href="{{ .RelPermalink }}">
+                    <img src="{{ $img }}" class="mx-auto d-block" style="width: 35%;" />
+                </a>
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </div>
+</div>
+
+{{ end }}
