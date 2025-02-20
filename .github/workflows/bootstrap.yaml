@@ -25,10 +25,11 @@ jobs:
       - name: Assume deploy role
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          unset-current-credentials: true
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
-          # role-skip-session-tagging: true
-          # role-chaining: true
+          role-skip-session-tagging: true
+          role-chaining: true
     
       - name: Bootstrap
         run: npx cdk bootstrap --force

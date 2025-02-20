@@ -77,10 +77,11 @@ jobs:
       - name: Assume GHA role
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          unset-current-credentials: true
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          # role-skip-session-tagging: true
-          # role-chaining: true
+          role-skip-session-tagging: true
+          role-chaining: true
 
       - name: Sts GetCallerIdentity
         run: |
