@@ -56,8 +56,15 @@ export class GitHubDeploy extends cdk.Stack {
     const deployUserRole = new iam.Role(this, 'DeployUserRole', {
       assumedBy: deployUser,
     });
+    deployUserRole.assumeRolePolicy?.addStatements(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['sts:AssumeRole', 'sts:TagSession'],
+        principals: [deployUser],
+      })
+    );
 
-    deployUserRole.grant(deployUser, 'sts:AssumeRole');
+    deployUserRole.grant(deployUser, 'sts:AssumeRole', 'sts:TagSession');
 
     deployUserRole.attachInlinePolicy(
       new iam.Policy(this, 'CloudformationPolicy', {
@@ -78,7 +85,7 @@ export class GitHubDeploy extends cdk.Stack {
         statements: [
           new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
-            actions: ['sts:AssumeRole', 'iam:*'],
+            actions: ['sts:AssumeRole', 'sts:TagSession', 'iam:*'],
             resources: [`arn:aws:iam::${account}:role/cdk-*`],
           }),
           new iam.PolicyStatement({
