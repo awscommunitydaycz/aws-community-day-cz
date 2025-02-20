@@ -5,7 +5,7 @@ on:
     branches: [feature/*]
 
 env:
-  AWS_REGION: 'eu-central-1'
+  AWS_REGION: 'eu-west-1'
 
 permissions:
   id-token: write # This is required for requesting the JWT
