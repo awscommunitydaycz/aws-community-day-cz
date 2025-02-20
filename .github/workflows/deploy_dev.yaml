@@ -78,4 +78,4 @@ jobs:
       - name: CDK doctor
         run: npx cdk doctor
       - name: Diff CDK
-        run: npx cdk diff dev/*
+        run: npx cdk diff dev/* --debug --verbose
