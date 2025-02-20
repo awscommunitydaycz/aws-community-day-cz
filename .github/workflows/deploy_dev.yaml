@@ -78,10 +78,9 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
-          role-session-name: 'gha-deploy'
-          role-skip-session-tagging: true
-          role-chaining: true
+          aws-region: ${{ env.AWS_REGION }}
+          # role-skip-session-tagging: true
+          # role-chaining: true
 
       - name: Sts GetCallerIdentity
         run: |
