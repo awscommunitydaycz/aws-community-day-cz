@@ -11,13 +11,6 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v1
 
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: $
-          aws-secret-access-key: $
-          aws-region: $
-
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
 
