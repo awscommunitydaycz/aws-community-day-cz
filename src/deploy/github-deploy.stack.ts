@@ -24,7 +24,7 @@ export class GitHubDeploy extends cdk.Stack {
       }
     );
 
-    new iam.Role(this, 'CdkDeployRole', {
+    const deployRole = new iam.Role(this, 'CdkDeployRole', {
       assumedBy: new iam.FederatedPrincipal(
         githubProvider.openIdConnectProviderArn,
         {
@@ -51,22 +51,7 @@ export class GitHubDeploy extends cdk.Stack {
       },
     });
 
-    const deployUser = new iam.User(this, 'DeployUser', {});
-
-    const deployUserRole = new iam.Role(this, 'DeployUserRole', {
-      assumedBy: deployUser,
-    });
-    deployUserRole.assumeRolePolicy?.addStatements(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['sts:AssumeRole', 'sts:TagSession'],
-        principals: [deployUser],
-      })
-    );
-
-    deployUserRole.grant(deployUser, 'sts:AssumeRole', 'sts:TagSession');
-
-    deployUser.attachInlinePolicy(
+    deployRole.attachInlinePolicy(
       new iam.Policy(this, 'CloudformationPolicy', {
         policyName: `deploy-cloudformation`,
         statements: [
@@ -79,7 +64,7 @@ export class GitHubDeploy extends cdk.Stack {
       })
     );
 
-    deployUser.attachInlinePolicy(
+    deployRole.attachInlinePolicy(
       new iam.Policy(this, 'CdkPolicy', {
         policyName: `deploy-cdk`,
         statements: [
