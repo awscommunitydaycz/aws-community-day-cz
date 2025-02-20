@@ -1,6 +1,8 @@
 name: Bootstrap CDK
 on:
   workflow_dispatch:
+  push:
+    branches: [feature/deploy-pipeline]
 
 jobs:
   deploy:
