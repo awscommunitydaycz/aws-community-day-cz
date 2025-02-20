@@ -29,6 +29,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
+          role-skip-session-tagging: true
     
       - name: Bootstrap
         run: npx cdk bootstrap --force
