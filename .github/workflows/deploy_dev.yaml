@@ -21,23 +21,28 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: '0.143.1'
           extended: true
+
       - name: Setup just
         uses: extractions/setup-just@v2
         with:
           just-version: '1.38.0'
+
       - uses: actions/cache@v4
         with:
           path: ${{ env.HUGO_CACHEDIR }}
           key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-hugomod-
+
       - name: Build
         run: just build-dev
+
       - name: Archive built web
         uses: actions/upload-artifact@v4
         with:
@@ -50,32 +55,38 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+
       - name: Download built website
         uses: actions/download-artifact@v4
         with:
           name: website
           path: website/
-      - name: Display structure of downloaded files
-        run: ls -R website/
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
+
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: '20'
           cache: 'pnpm'
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Assume GHA role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity
+
       - name: CDK doctor
         run: npx cdk doctor
+
       - name: Diff CDK
         run: npx cdk diff dev/* --debug --verbose
