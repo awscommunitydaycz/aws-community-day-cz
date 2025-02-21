@@ -78,12 +78,5 @@ jobs:
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Sts GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
-
-      - name: CDK doctor
-        run: npx cdk doctor
-
       - name: Diff CDK
-        run: npx cdk diff dev/* --debug --verbose
+        run: npx cdk diff dev/*
