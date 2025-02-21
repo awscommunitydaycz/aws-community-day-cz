@@ -80,3 +80,6 @@ jobs:
 
       - name: Diff CDK
         run: npx cdk diff dev/*
+
+      - name: Deploy CDK
+        run: npx cdk deploy dev/* --require-approval never
