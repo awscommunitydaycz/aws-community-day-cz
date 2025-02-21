@@ -4,8 +4,13 @@ on:
   push:
     branches: [feature/deploy-pipeline]
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+
 jobs:
-  deploy:
+  bootstrap:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -29,4 +34,4 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
     
       - name: Bootstrap
-        run: npx cdk bootstrap --force
+        run: npx cdk bootstrap
