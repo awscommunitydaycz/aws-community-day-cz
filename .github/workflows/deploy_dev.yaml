@@ -4,9 +4,6 @@ on:
   push:
     branches: [feature/*]
 
-env:
-  AWS_REGION: 'eu-west-1'
-
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
@@ -77,11 +74,8 @@ jobs:
       - name: Assume GHA role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          unset-current-credentials: true
           role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-          role-skip-session-tagging: true
-          role-chaining: true
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Sts GetCallerIdentity
         run: |
