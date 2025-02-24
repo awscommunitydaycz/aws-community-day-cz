@@ -1,0 +1,86 @@
+name: Test Deploy CDK
+
+on:
+  push:
+    branches: [feature/*]
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  build:
+    if: github.repository == 'Malanius/aws-community-day-cz'
+    runs-on: ubuntu-latest
+    env:
+      HUGO_CACHEDIR: /tmp/hugo_cache
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.143.1'
+          extended: true
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: '1.38.0'
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.HUGO_CACHEDIR }}
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
+      - name: Build
+        run: just build-dev
+
+      - name: Archive built web
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: website/*/public
+
+  deploy:
+    if: github.repository == 'Malanius/aws-community-day-cz'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
+      - name: Download built website
+        uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: website/
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Assume GHA role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Diff CDK
+        run: npx cdk diff dev/*
+
+      - name: Deploy CDK
+        run: npx cdk deploy dev/* --require-approval never
