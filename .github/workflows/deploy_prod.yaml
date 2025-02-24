@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   build:
+    if: github.repository == 'awscommunitydaycz/aws-community-day-cz'
     runs-on: ubuntu-latest
     env:
       HUGO_CACHEDIR: /tmp/hugo_cache
@@ -47,6 +48,7 @@ jobs:
           path: website/*/public
 
   deploy:
+    if: github.repository == 'awscommunitydaycz/aws-community-day-cz'
     needs: build
     runs-on: ubuntu-latest
     steps:
