@@ -49,7 +49,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment: dev
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
