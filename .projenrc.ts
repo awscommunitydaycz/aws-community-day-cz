@@ -2,7 +2,7 @@ import { awscdk } from 'projen';
 import { NodePackageManager, TrailingComma } from 'projen/lib/javascript';
 import { ReleaseTrigger } from 'projen/lib/release';
 
-const cdkVersion = '2.166.0';
+const cdkVersion = '2.184.1';
 
 const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'aws-community-day-cz',
