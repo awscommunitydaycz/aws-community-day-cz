@@ -6,8 +6,6 @@ speakers:
 # room: "TODO"
 # agenda: "TODO"
 duration: "TBA"
-sponsors:
-    # - "TODO"
 ---
 
 TBA
