@@ -49,7 +49,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   devDeps: [
     "@commitlint/cli",
     "@commitlint/config-conventional",
-    "@digitalroute/cz-conventional-changelog-for-jira",
+    "cz-conventional-changelog",
     "husky",
     "lint-staged",
     "tsconfig-paths",

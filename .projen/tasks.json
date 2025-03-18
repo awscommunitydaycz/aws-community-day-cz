@@ -322,13 +322,13 @@
       },
       "steps": [
         {
-          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@commitlint/cli,@commitlint/config-conventional,@digitalroute/cz-conventional-changelog-for-jira,@types/jest,@types/node,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,husky,jest,lint-staged,prettier,projen,ts-jest,ts-node,tsconfig-paths,typescript"
+          "exec": "pnpm dlx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@commitlint/cli,@commitlint/config-conventional,@types/jest,@types/node,cz-conventional-changelog,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,husky,jest,lint-staged,prettier,projen,ts-jest,ts-node,tsconfig-paths,typescript"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @commitlint/cli @commitlint/config-conventional @digitalroute/cz-conventional-changelog-for-jira @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk commit-and-tag-version esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint husky jest jest-junit lint-staged prettier projen ts-jest ts-node tsconfig-paths typescript aws-cdk-lib constructs"
+          "exec": "pnpm update @commitlint/cli @commitlint/config-conventional @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk commit-and-tag-version cz-conventional-changelog esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint husky jest jest-junit lint-staged prettier projen ts-jest ts-node tsconfig-paths typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

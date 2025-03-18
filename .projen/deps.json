@@ -9,10 +9,6 @@
       "type": "build"
     },
     {
-      "name": "@digitalroute/cz-conventional-changelog-for-jira",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -38,6 +34,10 @@
     {
       "name": "commit-and-tag-version",
       "version": "^12",
+      "type": "build"
+    },
+    {
+      "name": "cz-conventional-changelog",
       "type": "build"
     },
     {
