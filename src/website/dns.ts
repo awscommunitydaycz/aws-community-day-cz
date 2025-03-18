@@ -1,8 +1,8 @@
-import { CfnOutput } from "aws-cdk-lib";
-import { IDistribution } from "aws-cdk-lib/aws-cloudfront";
-import { ARecord, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
-import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-import { Construct } from "constructs";
+import { CfnOutput } from 'aws-cdk-lib';
+import { IDistribution } from 'aws-cdk-lib/aws-cloudfront';
+import { ARecord, IHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
+import { Construct } from 'constructs';
 
 export interface WebsiteDnsProps {
   hostedZone: IHostedZone;
@@ -16,19 +16,19 @@ export class WebsiteDns extends Construct {
     const { hostedZone, distribution } = props;
     const domainName = hostedZone.zoneName;
 
-    new ARecord(this, "WebsiteAliasRecord", {
+    new ARecord(this, 'WebsiteAliasRecord', {
       zone: hostedZone,
       target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
       recordName: domainName,
     });
 
-    new ARecord(this, "WebsiteWWWAliasRecord", {
+    new ARecord(this, 'WebsiteWWWAliasRecord', {
       zone: hostedZone,
       target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
       recordName: `www.${domainName}`,
     });
 
-    new CfnOutput(this, "WebsiteURL", {
+    new CfnOutput(this, 'WebsiteURL', {
       value: `https://${domainName}`,
     });
   }

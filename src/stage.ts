@@ -1,8 +1,7 @@
-import { GitHubDeploy } from '@deploy/github-deploy.stack';
-import { Website } from '@website/website.stack';
-
 import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { GitHubDeploy } from '@deploy/github-deploy.stack';
+import { Website } from '@website/website.stack';
 
 interface WebStageProps extends StageProps {
   appName: string;
