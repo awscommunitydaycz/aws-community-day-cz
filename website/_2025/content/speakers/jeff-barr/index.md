@@ -2,6 +2,7 @@
 title: "Jeff Barr" 
 headline: "AWS VP & Chief Evangelist"
 linkedin: "https://www.linkedin.com/in/jeffbarr/"
+speaker: "keynote"
 ---
 
 I have been working in the software industry since 1976 when I started working part-time at a computer store while still in high school. Since then I have worked at a variety of large and small organizations, served as VP of Engineering for a startup, worked at Microsoft and Amazon, and worked on my own.
