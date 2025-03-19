@@ -1,9 +1,9 @@
+import { readdirSync } from 'fs';
+import path from 'path';
 import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
-import path from 'path';
-import { readdirSync } from 'fs';
 
 export interface WebsiteDeploymentsProps {
   websiteBucket: Bucket;
