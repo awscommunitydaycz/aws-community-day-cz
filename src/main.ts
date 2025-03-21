@@ -13,6 +13,5 @@ new WebStage(app, appEnv, {
 });
 
 cdk.Tags.of(app).add('project', appName);
-cdk.Tags.of(app).add('env', appEnv);
 
 app.synth();
