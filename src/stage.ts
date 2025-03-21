@@ -20,12 +20,10 @@ export class WebStage extends Stage {
         this.stageName === 'dev'
           ? 'Malanius/aws-community-day-cz'
           : 'awscommunitydaycz/aws-community-day-cz';
-      const branch = this.stageName === 'prod' ? 'main' : undefined;
 
       new GitHubDeploy(this, 'github-deploy', {
         stackName: `${this.stageName}-${appName}-github-deploy`,
         repository,
-        branch,
       });
     }
 
