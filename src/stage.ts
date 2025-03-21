@@ -28,6 +28,7 @@ export class WebStage extends Stage {
     }
 
     new Website(this, 'web', {
+      appEnv: this.stageName,
       stackName: `${this.stageName}-${appName}-website`,
       domainName,
       hostedZoneId,

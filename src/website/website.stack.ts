@@ -7,6 +7,7 @@ import { WebsiteDeployemnts } from './deployments';
 import { WebsiteDns } from './dns';
 
 export interface WebsiteProps extends cdk.StackProps {
+  appEnv: string;
   domainName: string;
   hostedZoneId: string;
 }
@@ -15,7 +16,7 @@ export class Website extends cdk.Stack {
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id, props);
 
-    const { domainName, hostedZoneId } = props;
+    const { appEnv, domainName, hostedZoneId } = props;
 
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
       this,
@@ -35,6 +36,7 @@ export class Website extends cdk.Stack {
     });
 
     const cloudfront = new WebsiteCloudFront(this, 'WebsiteCloudFront', {
+      appEnv,
       websiteBucket,
       hostedZone,
     });
@@ -45,6 +47,7 @@ export class Website extends cdk.Stack {
     });
 
     new WebsiteDns(this, 'WebsiteDns', {
+      appEnv,
       hostedZone,
       distribution: cloudfront.distribution,
     });
