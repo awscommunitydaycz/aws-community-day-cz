@@ -9,22 +9,18 @@ init:
 serve:
     @just website::_2025::serve
 
-build-dev:
-    @just website::_2025::build-dev
-    @just website::demo::build-dev
+build-web:
+    @just website::_2025::build-web
+    @just website::demo::build-web
 
-build-prod:
-    @just website::_2025::build-prod
-    @just website::demo::build-prod
-
-diff-dev: build-dev
+diff-dev: build-web
     cdk diff dev/*
 
-deploy-dev: build-dev
+deploy-dev: build-web
     cdk deploy dev/*
 
-diff-prod: build-prod
+diff-prod: build-web
     cdk diff prod/*
 
-deploy-prod: build-prod
+deploy-prod: build-web
     cdk deploy prod/*
