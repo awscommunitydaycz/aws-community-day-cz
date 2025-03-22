@@ -62,7 +62,10 @@ jobs:
       APP_ENV: pr-${{ github.event.pull_request.number }}
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
 
       - name: Download built website
         uses: actions/download-artifact@v4
