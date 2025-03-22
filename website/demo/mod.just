@@ -1,8 +1,11 @@
 APP_ENV := env("APP_ENV", "dev")
-SITE_URL := if "{{APP_ENV}}" == "prod" { "https://awscommunityday.cz"
-} else if "{{APP_ENV}}" == "dev" {
-    "https://awscd.malanius.dev"} else {
-        "https://" + APP_ENV + ".awscommunityday.cz"}
+SITE_URL := if APP_ENV == "prod" { 
+    "https://awscommunityday.cz"
+} else if APP_ENV == "dev" {
+    "https://awscd.malanius.dev"
+} else {
+    "https://" + APP_ENV + ".awscommunityday.cz"
+}
 YEAR := "demo"
 
 default:
