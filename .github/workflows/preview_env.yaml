@@ -106,7 +106,6 @@ jobs:
 
   destroy:
     if: github.event.action == 'closed'
-    needs: build
     runs-on: ubuntu-latest
     env:
       APP_ENV: pr-${{ github.event.pull_request.number }}
