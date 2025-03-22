@@ -13,6 +13,7 @@ jobs:
     if: github.repository == 'Malanius/aws-community-day-cz'
     runs-on: ubuntu-latest
     env:
+      APP_ENV: dev
       HUGO_CACHEDIR: /tmp/hugo_cache
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +40,7 @@ jobs:
             ${{ runner.os }}-hugomod-
 
       - name: Build
-        run: just build-dev
+        run: just build-web
 
       - name: Archive built web
         uses: actions/upload-artifact@v4
@@ -51,6 +52,8 @@ jobs:
     if: github.repository == 'Malanius/aws-community-day-cz'
     needs: build
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: dev
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -80,7 +83,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Diff CDK
-        run: npx cdk diff dev/*
+        run: npx cdk diff ${APP_ENV}/*
 
       - name: Deploy CDK
-        run: npx cdk deploy dev/* --require-approval never
+        run: npx cdk deploy ${APP_ENV}/* --require-approval never

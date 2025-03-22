@@ -14,19 +14,21 @@ export class WebStage extends Stage {
     super(scope, id, props);
     const { domainName, hostedZoneId, appName } = props;
 
-    const repository =
-      this.stageName === 'prod'
-        ? 'awscommunitydaycz/aws-community-day-cz'
-        : 'Malanius/aws-community-day-cz';
-    const branch = this.stageName === 'prod' ? 'main' : undefined;
+    const ghaEnabledEnvs = ['dev', 'prod'];
+    if (ghaEnabledEnvs.includes(this.stageName)) {
+      const repository =
+        this.stageName === 'dev'
+          ? 'Malanius/aws-community-day-cz'
+          : 'awscommunitydaycz/aws-community-day-cz';
 
-    new GitHubDeploy(this, 'github-deploy', {
-      stackName: `${this.stageName}-${appName}-github-deploy`,
-      repository,
-      branch,
-    });
+      new GitHubDeploy(this, 'github-deploy', {
+        stackName: `${this.stageName}-${appName}-github-deploy`,
+        repository,
+      });
+    }
 
     new Website(this, 'web', {
+      appEnv: this.stageName,
       stackName: `${this.stageName}-${appName}-website`,
       domainName,
       hostedZoneId,

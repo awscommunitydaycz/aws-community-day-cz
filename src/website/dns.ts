@@ -5,6 +5,7 @@ import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { Construct } from 'constructs';
 
 export interface WebsiteDnsProps {
+  appEnv: string;
   hostedZone: IHostedZone;
   distribution: IDistribution;
 }
@@ -13,8 +14,11 @@ export class WebsiteDns extends Construct {
   constructor(scope: Construct, id: string, props: WebsiteDnsProps) {
     super(scope, id);
 
-    const { hostedZone, distribution } = props;
-    const domainName = hostedZone.zoneName;
+    const { appEnv, hostedZone, distribution } = props;
+    const noPrefixDomainEnvs = ['dev', 'prod'];
+    const domainName = noPrefixDomainEnvs.includes(appEnv)
+      ? hostedZone.zoneName
+      : `${appEnv}.${hostedZone.zoneName}`;
 
     new ARecord(this, 'WebsiteAliasRecord', {
       zone: hostedZone,

@@ -1,5 +1,7 @@
 mod website
 
+APP_ENV := env("APP_ENV", "dev")
+
 default:
     @just --list
 
@@ -9,22 +11,12 @@ init:
 serve:
     @just website::_2025::serve
 
-build-dev:
-    @just website::_2025::build-dev
-    @just website::demo::build-dev
+build-web:
+    @just website::_2025::build-web
+    @just website::demo::build-web
 
-build-prod:
-    @just website::_2025::build-prod
-    @just website::demo::build-prod
+cdk-diff: build-web
+    cdk diff {{APP_ENV}}/*
 
-diff-dev: build-dev
-    cdk diff dev/*
-
-deploy-dev: build-dev
-    cdk deploy dev/*
-
-diff-prod: build-prod
-    cdk diff prod/*
-
-deploy-prod: build-prod
-    cdk deploy prod/*
+cdk-deploy: build-web
+    cdk deploy {{APP_ENV}}/*

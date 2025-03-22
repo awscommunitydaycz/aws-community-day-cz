@@ -8,6 +8,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 export interface WebsiteCloudFrontProps {
+  appEnv: string;
   websiteBucket: Bucket;
   hostedZone: IHostedZone;
 }
@@ -17,8 +18,11 @@ export class WebsiteCloudFront extends Construct {
   constructor(scope: Construct, id: string, props: WebsiteCloudFrontProps) {
     super(scope, id);
 
-    const { websiteBucket, hostedZone } = props;
-    const domainName = hostedZone.zoneName;
+    const { appEnv, websiteBucket, hostedZone } = props;
+    const noPrefixDomainEnvs = ['dev', 'prod'];
+    const domainName = noPrefixDomainEnvs.includes(appEnv)
+      ? hostedZone.zoneName
+      : `${appEnv}.${hostedZone.zoneName}`;
 
     const certificate = new DnsValidatedCertificate(this, 'Certificate', {
       domainName: domainName,
@@ -34,6 +38,10 @@ export class WebsiteCloudFront extends Construct {
         domainNames: [domainName, `www.${domainName}`],
         certificate,
         defaultRootObject: 'index1.html',
+        priceClass:
+          appEnv === 'prod'
+            ? cloudfront.PriceClass.PRICE_CLASS_ALL
+            : cloudfront.PriceClass.PRICE_CLASS_100,
         defaultBehavior: {
           origin: S3BucketOrigin.withOriginAccessControl(websiteBucket),
           cachePolicy: new cloudfront.CachePolicy(this, 'CachePolicy', {

@@ -13,6 +13,7 @@ jobs:
     if: github.repository == 'awscommunitydaycz/aws-community-day-cz'
     runs-on: ubuntu-latest
     env:
+      APP_ENV: prod
       HUGO_CACHEDIR: /tmp/hugo_cache
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +52,8 @@ jobs:
     if: github.repository == 'awscommunitydaycz/aws-community-day-cz'
     needs: build
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: prod
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
