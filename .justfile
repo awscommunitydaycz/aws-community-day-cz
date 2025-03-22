@@ -16,7 +16,10 @@ build-web:
     @just website::demo::build-web
 
 cdk-diff: build-web
-    cdk diff {{APP_ENV}}/*
+    cdk diff {{ APP_ENV }}/*
 
 cdk-deploy: build-web
-    cdk deploy {{APP_ENV}}/*
+    cdk deploy {{ APP_ENV }}/*
+
+cdk-destroy: build-web
+    cdk destroy {{ APP_ENV }}/* --force

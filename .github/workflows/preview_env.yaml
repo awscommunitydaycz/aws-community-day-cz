@@ -109,12 +109,35 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_ENV: pr-${{ github.event.pull_request.number }}
+      HUGO_CACHEDIR: /tmp/hugo_cache
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
+
+      # CDK still needs to have built web artifacts to properly synth the stack
+      # before destroying it, as run separately from the build job no artifacts
+      # are available. This is a workaround to ensure the stack is properly
+      # destroyed.
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.143.1'
+          extended: true
+
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: '1.38.0'
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.HUGO_CACHEDIR }}
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -132,7 +155,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Destroy CDK
-        run: npx cdk destroy ${APP_ENV}/*
+        run: just cdk-destroy
 
       - name: Comment on PR with preview URL
         uses: peter-evans/create-or-update-comment@v4
