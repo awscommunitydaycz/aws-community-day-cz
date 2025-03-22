@@ -63,9 +63,6 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 0
 
       - name: Download built website
         uses: actions/download-artifact@v4
@@ -115,7 +112,10 @@ jobs:
       HUGO_CACHEDIR: /tmp/hugo_cache
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
