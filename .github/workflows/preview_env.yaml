@@ -2,6 +2,8 @@ name: Deploy preview environment
 
 on:
   pull_request:
+    paths:
+      - 'website/**'
     types:
       - opened
       - synchronize
