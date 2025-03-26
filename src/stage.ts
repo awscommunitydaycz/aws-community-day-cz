@@ -15,8 +15,8 @@ export class WebStage extends Stage {
     super(scope, id, props);
     const { domainName, hostedZoneId, appName } = props;
 
-    const ghaEnabledEnvs = ['dev', 'prod'];
-    if (ghaEnabledEnvs.includes(this.stageName)) {
+    const deployableEnvs = ['dev', 'prod'];
+    if (deployableEnvs.includes(this.stageName)) {
       const repository =
         this.stageName === 'dev'
           ? 'Malanius/aws-community-day-cz'
@@ -26,21 +26,23 @@ export class WebStage extends Stage {
         stackName: `${this.stageName}-${appName}-github-deploy`,
         repository,
       });
+
+      new WebsiteInfra(this, 'web-infra', {
+        appName,
+        appEnv: this.stageName,
+        stackName: `${this.stageName}-${appName}-web-infra`,
+        domainName,
+        hostedZoneId,
+      });
     }
 
-    const webInfra = new WebsiteInfra(this, 'web-infra', {
-      appName,
-      appEnv: this.stageName,
-      stackName: `${this.stageName}-${appName}-web-infra`,
-      domainName,
-      hostedZoneId,
-    });
-
+    // This will fail if the infra is not deployed
+    // but I can't add dependencies between stages for preview environments
     new WebsiteContent(this, 'web-content', {
       appName,
       appEnv: this.stageName,
       stackName: `${this.stageName}-${appName}-web-content`,
-    }).addDependency(webInfra);
+    });
 
     Aspects.of(this).add(new Tag('env', this.stageName));
   }
