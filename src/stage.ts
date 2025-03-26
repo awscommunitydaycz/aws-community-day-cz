@@ -1,7 +1,7 @@
 import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { GitHubDeploy } from '@deploy/github-deploy.stack';
-import { Website } from '@website/website.stack';
+import { WebsiteInfra } from '@website/website-infra.stack';
 
 interface WebStageProps extends StageProps {
   appName: string;
@@ -27,9 +27,10 @@ export class WebStage extends Stage {
       });
     }
 
-    new Website(this, 'web', {
+    new WebsiteInfra(this, 'web-infra', {
+      appName,
       appEnv: this.stageName,
-      stackName: `${this.stageName}-${appName}-website`,
+      stackName: `${this.stageName}-${appName}-web-infra`,
       domainName,
       hostedZoneId,
     });

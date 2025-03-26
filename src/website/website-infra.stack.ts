@@ -1,22 +1,28 @@
 import * as cdk from 'aws-cdk-lib';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { WebsiteCloudFront } from './cloudfront';
-import { WebsiteDeployemnts } from './deployments';
 import { WebsiteDns } from './dns';
+import {
+  getWebsiteBucketParameterName,
+  getWebsiteDistributionDomainParameterName,
+  getWebsiteDistributionIdParameterName,
+} from './parameters';
 
-export interface WebsiteProps extends cdk.StackProps {
+export interface WebsiteInfraProps extends cdk.StackProps {
+  appName: string;
   appEnv: string;
   domainName: string;
   hostedZoneId: string;
 }
 
-export class Website extends cdk.Stack {
-  constructor(scope: Construct, id: string, props: WebsiteProps) {
+export class WebsiteInfra extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: WebsiteInfraProps) {
     super(scope, id, props);
 
-    const { appEnv, domainName, hostedZoneId } = props;
+    const { appName, appEnv, domainName, hostedZoneId } = props;
 
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
       this,
@@ -35,15 +41,25 @@ export class Website extends cdk.Stack {
       enforceSSL: true,
     });
 
+    new StringParameter(this, 'WebsiteBucketName', {
+      parameterName: getWebsiteBucketParameterName(appName, appEnv),
+      stringValue: websiteBucket.bucketName,
+    });
+
     const cloudfront = new WebsiteCloudFront(this, 'WebsiteCloudFront', {
       appEnv,
       websiteBucket,
       hostedZone,
     });
 
-    new WebsiteDeployemnts(this, 'WebsiteDeployments', {
-      websiteBucket,
-      distribution: cloudfront.distribution,
+    new StringParameter(this, 'WebsiteDistributionId', {
+      parameterName: getWebsiteDistributionIdParameterName(appName, appEnv),
+      stringValue: cloudfront.distribution.distributionId,
+    });
+
+    new StringParameter(this, 'WebsiteDistributionDomainName', {
+      parameterName: getWebsiteDistributionDomainParameterName(appName, appEnv),
+      stringValue: cloudfront.distribution.domainName,
     });
 
     new WebsiteDns(this, 'WebsiteDns', {
