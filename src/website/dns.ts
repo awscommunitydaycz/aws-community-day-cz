@@ -15,10 +15,10 @@ export class WebsiteDns extends Construct {
     super(scope, id);
 
     const { appEnv, hostedZone, distribution } = props;
-    const noPrefixDomainEnvs = ['dev', 'prod'];
-    const domainName = noPrefixDomainEnvs.includes(appEnv)
-      ? hostedZone.zoneName
-      : `${appEnv}.${hostedZone.zoneName}`;
+    const domainName =
+      appEnv !== 'previews'
+        ? hostedZone.zoneName
+        : `${appEnv}.${hostedZone.zoneName}`;
 
     new ARecord(this, 'WebsiteAliasRecord', {
       zone: hostedZone,
