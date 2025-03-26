@@ -34,6 +34,14 @@ export class WebStage extends Stage {
         domainName,
         hostedZoneId,
       });
+
+      new WebsiteInfra(this, 'previews-web-infra', {
+        appName,
+        appEnv: 'previews',
+        stackName: `${this.stageName}-${appName}-previews-web-infra`,
+        domainName,
+        hostedZoneId,
+      });
     }
 
     // This will fail if the infra is not deployed
