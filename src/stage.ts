@@ -1,7 +1,8 @@
 import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { GitHubDeploy } from '@deploy/github-deploy.stack';
-import { Website } from '@website/website.stack';
+import { WebsiteContent } from '@website/website-content.stack';
+import { WebsiteInfra } from '@website/website-infra.stack';
 
 interface WebStageProps extends StageProps {
   appName: string;
@@ -14,8 +15,8 @@ export class WebStage extends Stage {
     super(scope, id, props);
     const { domainName, hostedZoneId, appName } = props;
 
-    const ghaEnabledEnvs = ['dev', 'prod'];
-    if (ghaEnabledEnvs.includes(this.stageName)) {
+    const deployableEnvs = ['dev', 'prod'];
+    if (deployableEnvs.includes(this.stageName)) {
       const repository =
         this.stageName === 'dev'
           ? 'Malanius/aws-community-day-cz'
@@ -25,13 +26,31 @@ export class WebStage extends Stage {
         stackName: `${this.stageName}-${appName}-github-deploy`,
         repository,
       });
+
+      new WebsiteInfra(this, 'web-infra', {
+        appName,
+        appEnv: this.stageName,
+        stackName: `${this.stageName}-${appName}-web-infra`,
+        domainName,
+        hostedZoneId,
+      });
+
+      new WebsiteInfra(this, 'previews-web-infra', {
+        appName,
+        appEnv: 'previews',
+        stackName: `${this.stageName}-${appName}-previews-web-infra`,
+        domainName,
+        hostedZoneId,
+      });
     }
 
-    new Website(this, 'web', {
+    // This will fail if the infra is not deployed
+    // but I can't add dependencies between stages for preview environments
+    new WebsiteContent(this, 'web-content', {
+      appName,
       appEnv: this.stageName,
-      stackName: `${this.stageName}-${appName}-website`,
-      domainName,
-      hostedZoneId,
+      stackName: `${this.stageName}-${appName}-web-content`,
+      isLiveSite: deployableEnvs.includes(this.stageName),
     });
 
     Aspects.of(this).add(new Tag('env', this.stageName));
