@@ -14,15 +14,15 @@ import {
 export interface WebsiteContentProps extends cdk.StackProps {
   appName: string;
   appEnv: string;
-  isPreview?: boolean;
+  isLiveSite?: boolean;
 }
 
 export class WebsiteContent extends cdk.Stack {
   constructor(scope: Construct, id: string, props: WebsiteContentProps) {
     super(scope, id, props);
 
-    const { appEnv, appName, isPreview } = props;
-    const lookupEnv = isPreview ? 'previews' : appEnv;
+    const { appEnv, appName, isLiveSite } = props;
+    const lookupEnv = isLiveSite ? appEnv : 'previews';
 
     const websiteBucketName = StringParameter.fromStringParameterAttributes(
       this,
@@ -73,18 +73,29 @@ export class WebsiteContent extends cdk.Stack {
       }
     );
 
-    const years = readdirSync('website', { withFileTypes: true })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
+    // Not calendar year but the year of currently prepared event
+    // Don't foget to update when next event is prepared
+    // Don't ommmit underscore prefix
+    const currentEvent = '_2025';
+    let events = [currentEvent];
+    if (isLiveSite) {
+      events = readdirSync('website', { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name);
+    }
 
-    years.forEach((yearWithPrefix) => {
-      const year = yearWithPrefix.replace('_', '');
-      new BucketDeployment(this, `Deploy${year}Website`, {
-        sources: [Source.asset(path.join('website', yearWithPrefix, 'public'))],
+    events.forEach((eventWithPrefix) => {
+      const content_path = isLiveSite
+        ? eventWithPrefix.replace('_', '')
+        : appEnv;
+      new BucketDeployment(this, `Deploy_${content_path}Website`, {
+        sources: [
+          Source.asset(path.join('website', eventWithPrefix, 'public')),
+        ],
         destinationBucket: websiteBucket,
-        destinationKeyPrefix: `${year}/`,
+        destinationKeyPrefix: `${content_path}/`,
         distribution,
-        distributionPaths: [`/${year}/*`],
+        distributionPaths: [`/${content_path}/*`],
       });
     });
 

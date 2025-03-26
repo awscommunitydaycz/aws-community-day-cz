@@ -50,7 +50,7 @@ export class WebStage extends Stage {
       appName,
       appEnv: this.stageName,
       stackName: `${this.stageName}-${appName}-web-content`,
-      isPreview: !deployableEnvs.includes(this.stageName),
+      isLiveSite: deployableEnvs.includes(this.stageName),
     });
 
     Aspects.of(this).add(new Tag('env', this.stageName));
