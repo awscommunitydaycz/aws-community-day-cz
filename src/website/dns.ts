@@ -26,11 +26,13 @@ export class WebsiteDns extends Construct {
       recordName: domainName,
     });
 
-    new ARecord(this, 'WebsiteWWWAliasRecord', {
-      zone: hostedZone,
-      target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
-      recordName: `www.${domainName}`,
-    });
+    if (appEnv !== 'previews') {
+      new ARecord(this, 'WebsiteWWWAliasRecord', {
+        zone: hostedZone,
+        target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
+        recordName: `www.${domainName}`,
+      });
+    }
 
     new CfnOutput(this, 'WebsiteURL', {
       value: `https://${domainName}`,
