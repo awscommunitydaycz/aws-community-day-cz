@@ -1,6 +1,7 @@
 import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { GitHubDeploy } from '@deploy/github-deploy.stack';
+import { WebsiteContent } from '@website/website-content.stack';
 import { WebsiteInfra } from '@website/website-infra.stack';
 
 interface WebStageProps extends StageProps {
@@ -27,13 +28,19 @@ export class WebStage extends Stage {
       });
     }
 
-    new WebsiteInfra(this, 'web-infra', {
+    const webInfra = new WebsiteInfra(this, 'web-infra', {
       appName,
       appEnv: this.stageName,
       stackName: `${this.stageName}-${appName}-web-infra`,
       domainName,
       hostedZoneId,
     });
+
+    new WebsiteContent(this, 'web-content', {
+      appName,
+      appEnv: this.stageName,
+      stackName: `${this.stageName}-${appName}-web-content`,
+    }).addDependency(webInfra);
 
     Aspects.of(this).add(new Tag('env', this.stageName));
   }
