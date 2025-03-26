@@ -14,19 +14,21 @@ import {
 export interface WebsiteContentProps extends cdk.StackProps {
   appName: string;
   appEnv: string;
+  isPreview?: boolean;
 }
 
 export class WebsiteContent extends cdk.Stack {
   constructor(scope: Construct, id: string, props: WebsiteContentProps) {
     super(scope, id, props);
 
-    const { appEnv, appName } = props;
+    const { appEnv, appName, isPreview } = props;
+    const lookupEnv = isPreview ? 'previews' : appEnv;
 
     const websiteBucketName = StringParameter.fromStringParameterAttributes(
       this,
       'WebsiteBucketNameParam',
       {
-        parameterName: getWebsiteBucketParameterName(appName, appEnv),
+        parameterName: getWebsiteBucketParameterName(appName, lookupEnv),
         forceDynamicReference: true,
       }
     ).stringValue;
@@ -41,7 +43,10 @@ export class WebsiteContent extends cdk.Stack {
       this,
       'WebsiteDistributionIdParam',
       {
-        parameterName: getWebsiteDistributionIdParameterName(appName, appEnv),
+        parameterName: getWebsiteDistributionIdParameterName(
+          appName,
+          lookupEnv
+        ),
         forceDynamicReference: true,
       }
     ).stringValue;
@@ -51,7 +56,10 @@ export class WebsiteContent extends cdk.Stack {
         this,
         'WebsiteDistributionDomainNameParam',
         {
-          parameterName: getWebsiteDistributionIdParameterName(appName, appEnv),
+          parameterName: getWebsiteDistributionIdParameterName(
+            appName,
+            lookupEnv
+          ),
           forceDynamicReference: true,
         }
       ).stringValue;
