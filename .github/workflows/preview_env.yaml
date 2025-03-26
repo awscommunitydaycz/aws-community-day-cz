@@ -102,7 +102,7 @@ jobs:
           body: |
             🚀 Preview environment is ready!
 
-            🌐 [View Preview](https://previews.awscommunityday.cz/${{ github.event.pull_request.number }}/)
+            🌐 [View Preview](https://previews.awscommunityday.cz/pr-${{ github.event.pull_request.number }}/)
 
   destroy:
     if: github.event.action == 'closed'
