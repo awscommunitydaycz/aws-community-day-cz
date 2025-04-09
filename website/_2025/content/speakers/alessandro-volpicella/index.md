@@ -8,7 +8,7 @@ Hi 👋🏽
 
 I'm Sandro, a fullstack developer specialized in AWS & Serverless. I love building digital projects that solve real problems.
 
-Over the past few years, I've launched everything from weekend side projects to high-scale APIs handling 100 million monthly requests. I love building digital products, see sandrovolpicella.com/projects.
+Over the past few years, I've launched everything from weekend side projects to high-scale APIs handling 100 million monthly requests. I love building digital products, see [my projects](https://sandrovolpicella.com/projects)!
 
 I work as a freelance developer & consultant. If you need help with your web application or want to improve your Cloud Infrastructure, reach out, and let's chat about how I can help.
 
