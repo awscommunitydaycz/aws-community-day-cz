@@ -2,7 +2,7 @@
 title: "Opening Ceremony"
 date: 2025-04-29T09:00:00
 speakers:
-room: "C1"
+room: "c1"
 agenda: "0900"
 duration: "15 min"
 ---
