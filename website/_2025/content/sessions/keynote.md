@@ -1,11 +1,11 @@
 ---
 title: "Keynote"
-# date: 2025-04-29T10:00:00
+date: 2025-04-29T09:15:00
 speakers:
     - "jeff-barr"
 room: "C1"
-# agenda: "TODO"
-duration: "TBA"
+agenda: "0915"
+duration: "45 min"
 ---
 
 TBA
