@@ -3,7 +3,7 @@ title: "Closing Ceremony"
 date: 2025-04-29T17:00:00
 speakers:
 room: "c1"
-agenda: "1700"
+agenda: "1705"
 duration: "15 min"
 ---
 
