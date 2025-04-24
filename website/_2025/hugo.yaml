@@ -18,11 +18,8 @@ params:
 
     enable_og_image: true
 
-menus:
-  main:
-    - name: 'Register'
-      url: 'https://form.simpleshop.cz/EOqaW/'
-      weight: 1000
+# menus:
+#   main:
 # # TODO: once we have previous years, link them here :)
 #     - name: 'Previous Events'
 #       weight: 100
