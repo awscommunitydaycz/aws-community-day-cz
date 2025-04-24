@@ -1,6 +1,7 @@
 import { Aspects, Stage, StageProps, Tag } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { GitHubDeploy } from '@deploy/github-deploy.stack';
+import { CloudFrontCertificateStack } from '@website/certificate-stack';
 import { WebsiteContent } from '@website/website-content.stack';
 import { WebsiteInfra } from '@website/website-infra.stack';
 
@@ -27,6 +28,19 @@ export class WebStage extends Stage {
         repository,
       });
 
+      const cfCertificate = new CloudFrontCertificateStack(
+        this,
+        'certificate',
+        {
+          appEnv: this.stageName,
+          env: { region: 'us-east-1' }, // CloudFront requires the certificate to be in us-east-1
+          domainName,
+          hostedZoneId,
+          stackName: `${this.stageName}-${appName}-certificate`,
+          crossRegionReferences: true,
+        }
+      );
+
       new WebsiteInfra(this, 'web-infra', {
         appName,
         appEnv: this.stageName,
@@ -34,6 +48,19 @@ export class WebStage extends Stage {
         domainName,
         hostedZoneId,
       });
+
+      const previewsCertificate = new CloudFrontCertificateStack(
+        this,
+        'previews-certificate',
+        {
+          appEnv: 'previews',
+          env: { region: 'us-east-1' }, // CloudFront requires the certificate to be in us-east-1
+          domainName,
+          hostedZoneId,
+          stackName: `${this.stageName}-${appName}-previews-certificate`,
+          crossRegionReferences: true,
+        }
+      );
 
       new WebsiteInfra(this, 'previews-web-infra', {
         appName,
