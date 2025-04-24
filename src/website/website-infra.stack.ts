@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { ICertificate } from 'aws-cdk-lib/aws-certificatemanager';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
@@ -16,13 +17,14 @@ export interface WebsiteInfraProps extends cdk.StackProps {
   appEnv: string;
   domainName: string;
   hostedZoneId: string;
+  sslCertificate: ICertificate;
 }
 
 export class WebsiteInfra extends cdk.Stack {
   constructor(scope: Construct, id: string, props: WebsiteInfraProps) {
     super(scope, id, props);
 
-    const { appName, appEnv, domainName, hostedZoneId } = props;
+    const { appName, appEnv, domainName, hostedZoneId, sslCertificate } = props;
 
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
       this,
@@ -50,6 +52,7 @@ export class WebsiteInfra extends cdk.Stack {
       appEnv,
       websiteBucket,
       hostedZone,
+      sslCertificate,
     });
 
     new StringParameter(this, 'WebsiteDistributionId', {

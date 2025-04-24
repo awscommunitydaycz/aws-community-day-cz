@@ -1,6 +1,6 @@
 import path from 'path';
 import { CfnOutput, Duration } from 'aws-cdk-lib';
-import { DnsValidatedCertificate } from 'aws-cdk-lib/aws-certificatemanager';
+import { ICertificate } from 'aws-cdk-lib/aws-certificatemanager';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { IHostedZone } from 'aws-cdk-lib/aws-route53';
@@ -11,6 +11,7 @@ export interface WebsiteCloudFrontProps {
   appEnv: string;
   websiteBucket: Bucket;
   hostedZone: IHostedZone;
+  sslCertificate: ICertificate;
 }
 
 export class WebsiteCloudFront extends Construct {
@@ -18,18 +19,16 @@ export class WebsiteCloudFront extends Construct {
   constructor(scope: Construct, id: string, props: WebsiteCloudFrontProps) {
     super(scope, id);
 
-    const { appEnv, websiteBucket, hostedZone } = props;
+    const {
+      appEnv,
+      websiteBucket,
+      hostedZone,
+      sslCertificate: certificate,
+    } = props;
     const noPrefixDomainEnvs = ['dev', 'prod'];
     const domainName = noPrefixDomainEnvs.includes(appEnv)
       ? hostedZone.zoneName
       : `${appEnv}.${hostedZone.zoneName}`;
-
-    const certificate = new DnsValidatedCertificate(this, 'Certificate', {
-      domainName: domainName,
-      subjectAlternativeNames: [`www.${domainName}`],
-      hostedZone,
-      region: 'us-east-1',
-    });
 
     this.distribution = new cloudfront.Distribution(
       this,

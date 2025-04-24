@@ -47,6 +47,8 @@ export class WebStage extends Stage {
         stackName: `${this.stageName}-${appName}-web-infra`,
         domainName,
         hostedZoneId,
+        sslCertificate: cfCertificate.certificate,
+        crossRegionReferences: true,
       });
 
       const previewsCertificate = new CloudFrontCertificateStack(
@@ -68,6 +70,8 @@ export class WebStage extends Stage {
         stackName: `${this.stageName}-${appName}-previews-web-infra`,
         domainName,
         hostedZoneId,
+        sslCertificate: previewsCertificate.certificate,
+        crossRegionReferences: true,
       });
     }
 
