@@ -31,7 +31,7 @@ export class CloudFrontCertificateStack extends Stack {
 
     this.certificate = new Certificate(this, 'Certificate', {
       domainName: dnsName,
-      subjectAlternativeNames: [`www.${domainName}`],
+      subjectAlternativeNames: [`www.${dnsName}`],
       keyAlgorithm: KeyAlgorithm.EC_PRIME256V1,
       validation: CertificateValidation.fromDns(hostedZone),
     });
