@@ -6,7 +6,7 @@ import { getDomainInfo } from '@domain-config';
 const appName = 'awscdcz';
 const app = new cdk.App();
 const appEnv = env.APP_ENV || 'dev';
-const region = appEnv === 'prod' ? 'eu-central-1' : 'eu-west-1';
+const region = appEnv === 'dev' ? 'eu-west-1' : 'eu-central-1';
 
 new WebStage(app, appEnv, {
   appName,
