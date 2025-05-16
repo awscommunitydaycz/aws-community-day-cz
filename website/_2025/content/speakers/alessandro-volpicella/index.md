@@ -12,6 +12,6 @@ Over the past few years, I've launched everything from weekend side projects to 
 
 I work as a freelance developer & consultant. If you need help with your web application or want to improve your Cloud Infrastructure, reach out, and let's chat about how I can help.
 
-I've published two AWS books: AWS Fundamentals & the CloudWatch Book. I believe you truly learn technology by applying it, not just studying for certifications. I focus on that in my content.
+I've published two AWS books: [AWS Fundamentals](https://awsfundamentals.com/) & the [CloudWatch Book](https://cloudwatchbook.com/) I believe you truly learn technology by applying it, not just studying for certifications. I focus on that in my content.
 
 Always up for a coffee and a good tech conversation. Let's connect! ☕
